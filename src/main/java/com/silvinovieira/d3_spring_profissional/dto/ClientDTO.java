@@ -12,6 +12,8 @@ public class ClientDTO {
     private LocalDate birthDate;
     private Integer children;
 
+    public ClientDTO() {}
+
     public ClientDTO(Long id, Integer children, LocalDate birthDate, Double income, String cpf, String name) {
         this.id = id;
         this.children = children;
