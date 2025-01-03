@@ -3,11 +3,14 @@ package com.silvinovieira.d3_spring_profissional.services;
 import com.silvinovieira.d3_spring_profissional.dto.ClientDTO;
 import com.silvinovieira.d3_spring_profissional.entities.Client;
 import com.silvinovieira.d3_spring_profissional.repositories.ClientRepositories;
+import com.silvinovieira.d3_spring_profissional.services.exceptions.DatabaseException;
 import com.silvinovieira.d3_spring_profissional.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -43,6 +46,15 @@ public class ClientService {
         copyDtoToEntity(dto, client);
         client = repository.save(client);
         return new ClientDTO(client);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        try{
+            repository.deleteById(id);
+        }catch(DataIntegrityViolationException e){
+            throw new DatabaseException("Erro de integridade referencial");
+        }
     }
 
     private void copyDtoToEntity(ClientDTO dto, Client client) {
