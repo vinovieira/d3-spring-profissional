@@ -1,14 +1,18 @@
 package com.silvinovieira.d3_spring_profissional.dto;
 
 import com.silvinovieira.d3_spring_profissional.entities.Client;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
 public class ClientDTO {
     private Long id;
+    @NotBlank(message = "campo requerido")
     private String name;
     private String cpf;
     private Double income;
+    @PastOrPresent(message = "data de nascimento inválida")
     private LocalDate birthDate;
     private Integer children;
 
